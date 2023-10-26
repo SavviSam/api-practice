@@ -1,23 +1,61 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState, useEffect } from "react";
+import Starship from "./Starship";
 
 function App() {
+  const [starship, setStarship] = useState([]);
+  const [display, setDisplay] = useState("");
+
+  useEffect(() => {
+    async function getShips() {
+      const spaceShip = await fetch("https://swapi.py4e.com/api/starships");
+      const ships = await spaceShip.json();
+      setStarship(ships.results);
+    }
+    getShips();
+  }, []);
+
+  const randomClick = () => {
+    let randShip = starship[Math.floor(Math.random() * starship.length)];
+    setDisplay(randShip);
+    console.log(randShip);
+  };
+  const numberFormatter = new Intl.NumberFormat("en-US", {
+    style: "decimal",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  const formatNumber = (num) => {
+    // if (typeof num === "number") {
+    //   return numberFormatter.format(num);
+    // } else if (typeof num === "string" && !isNaN) {
+    //   return numberFormatter.format(parseFloat(num));
+    // }
+    return num;
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        textAlign: "center",
+        height: "100vh",
+      }}
+    >
+      <div>
+        <h1>How many people can a Starship hold??</h1>
+      </div>
+      <div>
+        <Starship
+          name={display.name}
+          shipClass={display.starship_class}
+          passengers={formatNumber(display.passengers)}
+        />
+        <button onClick={randomClick}>Click for a Starship</button>
+      </div>
     </div>
   );
 }
