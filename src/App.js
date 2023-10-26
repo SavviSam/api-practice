@@ -20,20 +20,6 @@ function App() {
     setDisplay(randShip);
     console.log(randShip);
   };
-  const numberFormatter = new Intl.NumberFormat("en-US", {
-    style: "decimal",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-
-  const formatNumber = (num) => {
-    // if (typeof num === "number") {
-    //   return numberFormatter.format(num);
-    // } else if (typeof num === "string" && !isNaN) {
-    //   return numberFormatter.format(parseFloat(num));
-    // }
-    return num;
-  };
 
   return (
     <div
@@ -52,7 +38,7 @@ function App() {
         <Starship
           name={display.name}
           shipClass={display.starship_class}
-          passengers={formatNumber(display.passengers)}
+          passengers={display.passengers}
         />
         <button onClick={randomClick}>Click for a Starship</button>
       </div>
